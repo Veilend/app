@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="city" *ngIf="!changeCity">
+    <div class="city-name">{{cityName}}</div>
+    <div class="temp-toogle">
+      º
+      <span class="temp-type">
+        <span [className]="unit === 'metric' ? 'active' : ''" (click)="toogleUnit('metric')">C</span>
+        <span [className]="unit === 'imperial' ? 'active' : ''" (click)="toogleUnit('imperial')">F</span>
+      </span>
+    </div>
+    <div class="label" (click)="changeCity = !changeCity">
+      Сменить город
+    </div>
+    <div (click)="getGeolocation()" class="label">
+      <img class="location" src="../../assets/location.svg"> 
+      Мое местоположение
+    </div>      
+  </div>
+  <div class="city" *ngIf="changeCity">
+    <input type="text" [(ngModel)]="cityName" placeholder="Укажите город">
+    <span *ngIf="notFound" class="not-found">По вашему запросу ничего не найдено</span>
+    <span (click)="getData()" class="apply">ОК</span>
+  </div> 
+  <div class="weather" *ngIf="!changeCity">
+    <div class="weather-temp">
+        <img width="120px" height="120px" src={{getiIcon()}} alt="">
+        <span class="temp-value">{{around()}}º</span>
+    </div>
+    <div class="weather-description">
+        {{city.weather[0].description}}
+    </div>
+    
+  </div>
+  <div class="content" *ngIf="!changeCity">
+    <div>
+      <p class="label">
+        Ветер
+      </p>
+      <p class="weather-value">
+        {{city.wind.speed}} м/с <br>
+        {{directionWind()}}
+      </p>
+    </div>
+    <div>
+      <p class="label">
+        Давление
+      </p>
+      <p class="weather-value">
+        {{city.main.pressure}} мм рт.ст
+      </p>
+    </div>
+    <div>
+      <p class="label">
+        Влажность
+      </p>
+      <p class="weather-value">
+        {{city.main.humidity}} %
+        </p>
+    </div>
+    <div>
+      <p class="label">
+        Вероятность дождя
+      </p>
+      <p class="weather-value">
+        {{city.clouds.all}} %
+      </p>
+    </div>
+  </div>
+</ion-content>
